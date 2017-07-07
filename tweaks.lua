@@ -31,13 +31,6 @@ string.endsWith = function(self, subString)
 	return self:sub(#self - #subString + 1, -1) == subString
 end
 
-string.parse = function(self, startPos, endPos)
-	local value = self:trim():sub(startPos or 1, endPos or -1)
-	local numValue = tonumber(value)
-	
-	return numValue or value
-end
-
 table.export = function(object)
 	local object = object or {}
 	local out = {}
