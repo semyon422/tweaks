@@ -15,12 +15,17 @@ string.trim = function(self)
 	return self:match("^%s*(.-)%s*$")
 end
 
-string.split = function(self, separator)
-   local separator, fields = separator or ":", {}
-   local pattern = string.format("([^%s]+)", separator)
-   self:gsub(pattern, function(c) fields[#fields + 1] = c end)
-   
-   return fields
+string.split = function(self, divider)
+	local position = 0
+	local output = {}
+	
+	for endchar,startchar in function() return self:find(divider, position, true) end do
+		table.insert(output, self:sub(position, endchar - 1))
+		position = startchar + 1
+	end
+	table.insert(output, self:sub(position))
+	
+	return output
 end
 
 string.startsWith = function(self, subString)
@@ -92,7 +97,3 @@ belong = function(...)
 	
 	return true
 end
-
-
-
-
