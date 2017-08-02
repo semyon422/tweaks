@@ -97,3 +97,7 @@ belong = function(...)
 	
 	return true
 end
+
+map = function(value, x1, x2, x3, x4)
+	return (value - x1) * (x4 - x3) / (x2 - x1) + x3
+end
