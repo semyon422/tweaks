@@ -30,14 +30,6 @@ string.split = function(self, divider)
 	return output
 end
 
-string.startsWith = function(self, subString)
-	return self:sub(1, #subString) == subString
-end
-
-string.endsWith = function(self, subString)
-	return self:sub(#self - #subString + 1, -1) == subString
-end
-
 table.export = function(object)
 	local object = object or {}
 	local out = {}
