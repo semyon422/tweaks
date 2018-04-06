@@ -1,3 +1,5 @@
+package.path = package.path .. ";./?/init.lua" .. ";./?.lua"
+
 table.print = function(self, i)
 	if not i then i = 0 end
 	for key, value in pairs(self) do
@@ -19,7 +21,7 @@ string.split = function(self, divider)
 	local position = 0
 	local output = {}
 	
-	for endchar,startchar in function() return self:find(divider, position, true) end do
+	for endchar, startchar in function() return self:find(divider, position, true) end do
 		table.insert(output, self:sub(position, endchar - 1))
 		position = startchar + 1
 	end
