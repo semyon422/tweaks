@@ -1,12 +1,26 @@
 package.path = package.path .. ";./?/init.lua" .. ";./?.lua"
 
-table.print = function(self, i)
-	if not i then i = 0 end
+math.round = function(n)
+	if n % 1 >= 0.5 then
+		return math.ceil(n)
+	else
+		return math.floor(n)
+	end
+end
+
+table.print = function(self, i, tables)
+	local i = i or 1
+	local tables = tables or {[self] = true}
+	
+	if i == 1 then
+		print(tostring(self))
+	end
 	for key, value in pairs(self) do
-		io.write(string.rep("  ", i) .. tostring(key) .. ": ")
-		if type(value) == "table" and key ~= "__index" then
+		io.write(string.rep(" ", i) .. tostring(key) .. ": ")
+		if type(value) == "table" and not tables[value] then
+			tables[value] = true
 			io.write("\n")
-			table.print(value, i+1)
+			table.print(value, i+1, tables)
 		else
 			print(value)
 		end
@@ -17,11 +31,11 @@ string.trim = function(self)
 	return self:match("^%s*(.-)%s*$")
 end
 
-string.split = function(self, divider)
+string.split = function(self, divider, notPlain)
 	local position = 0
 	local output = {}
 	
-	for endchar, startchar in function() return self:find(divider, position, true) end do
+	for endchar, startchar in function() return self:find(divider, position, not notPlain) end do
 		table.insert(output, self:sub(position, endchar - 1))
 		position = startchar + 1
 	end
@@ -48,6 +62,25 @@ table.export = function(object)
 	table.insert(out, "}")
 	
 	return table.concat(out)
+end
+
+table.equal = function(object1, object2)
+	if type(object1) ~= "table" or type(object2) ~= "table" then
+		return
+	end
+	
+	for key in pairs(object1) do
+		if object1[key] ~= object2[key] then
+			return
+		end
+	end
+	for key in pairs(object2) do
+		if object1[key] ~= object2[key] then
+			return
+		end
+	end
+	
+	return true
 end
 
 local search = function(key, parents)
@@ -94,4 +127,34 @@ end
 
 map = function(value, x1, x2, x3, x4)
 	return (value - x1) * (x4 - x3) / (x2 - x1) + x3
+end
+
+table.clone = function(object)
+	local newObject = {}
+	
+	for key, value in pairs(object) do
+		newObject[key] = value
+	end
+	
+	return newObject
+end
+
+table.copy = function(object1, offset1, object2, offset2, size)
+	for i = 1, size do
+		object2[offset2 + i] = object1[offset1 + i]
+	end
+end
+
+string.mirror = function(s)
+	local out = {}
+	for i = 1, #s do
+		table.insert(out, 1, s:sub(i, i))
+	end
+	return table.concat(out)
+end
+
+trycatch = function(try, catch)
+	local status, result = pcall(try)
+	if not status then catch(result) end
+	return result
 end
