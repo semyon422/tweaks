@@ -64,7 +64,7 @@ table.export = function(object)
 	return table.concat(out)
 end
 
-table.equal = function(object1, object2)
+table.leftequal = function(object1, object2)
 	if type(object1) ~= "table" or type(object2) ~= "table" then
 		return
 	end
@@ -74,13 +74,12 @@ table.equal = function(object1, object2)
 			return
 		end
 	end
-	for key in pairs(object2) do
-		if object1[key] ~= object2[key] then
-			return
-		end
-	end
 	
 	return true
+end
+
+table.equal = function(object1, object2)
+	return table.leftequal(object1, object2) and table.leftequal(object2, object1)
 end
 
 local search = function(key, parents)
