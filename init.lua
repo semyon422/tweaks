@@ -8,6 +8,12 @@ math.round = function(n)
 	end
 end
 
+math.sign = function(n)
+	if n == 0 then return 0
+	else return n / math.abs(n)
+	end
+end
+
 table.print = function(self, i, tables)
 	local i = i or 1
 	local tables = tables or {[self] = true}
