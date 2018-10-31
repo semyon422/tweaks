@@ -111,6 +111,8 @@ createClass = function(...)
 		local object = object or {}
 		setmetatable(object, class)
 		
+		if object.construct then object:construct() end
+		
 		return object
 	end
 	
