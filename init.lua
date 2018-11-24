@@ -107,11 +107,11 @@ createClass = function(...)
 	})
 	
 	class.__index = class
-	class.new = function(self, object)
+	class.new = function(self, object, ...)
 		local object = object or {}
 		setmetatable(object, class)
 		
-		if object.construct then object:construct() end
+		if object.construct then object:construct(...) end
 		
 		return object
 	end
