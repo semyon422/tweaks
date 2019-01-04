@@ -116,6 +116,13 @@ createClass = function(...)
 		return object
 	end
 	
+	class.global = function(self, ...)
+		if not class.globalInstance then
+			class.globalInstance = class:new(...)
+		end
+		return class.globalInstance
+	end
+	
 	return class
 end
 
